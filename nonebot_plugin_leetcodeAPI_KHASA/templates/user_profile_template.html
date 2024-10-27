@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: #e7f3fe;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #e7f3fe;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stat strong {
+            color: #1a73e8;
+        }
+
+        .link {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Profile: {{ username }}</h1>
+        <img src="{{ avatar }}" alt="User Avatar" width="100" height="100" class="avatar">
+        <p><strong>Name:</strong> {{ name }}</p>
+        <p><strong>Birthday:</strong> {{ birthday }}</p>
+        <div class="stat">
+            <p><strong>Ranking:</strong> {{ ranking }}</p>
+            <p><strong>Reputation:</strong> {{ reputation }}</p>
+        </div>
+        <p><strong>GitHub:</strong> <a href="{{ gitHub }}" class="link">{{ gitHub }}</a></p>
+        <p><strong>Twitter:</strong> <a href="{{ twitter }}" class="link">{{ twitter }}</a></p>
+        <p><strong>LinkedIn:</strong> <a href="{{ linkedIN }}" class="link">{{ linkedIN }}</a></p>
+        <p><strong>Website:</strong></p>
+        <ul>
+            {% for site in website %}
+            <li><a href="{{ site }}" class="link">{{ site }}</a></li>
+            {% endfor %}
+        </ul>
+        <p><strong>Country:</strong> {{ country }}</p>
+        <p><strong>Company:</strong> {{ company }}</p>
+        <p><strong>School:</strong> {{ school }}</p>
+        <p><strong>Skills:</strong></p>
+        <ul>
+            {% for skill in skillTags %}
+            <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>About:</strong> {{ about }}</p>
+    </div>
+</body>
+
+</html>

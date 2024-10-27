@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detailed User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #e7f3fe;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stat strong {
+            color: #1a73e8;
+        }
+
+        .calendar-item,
+        .submission-item {
+            background-color: #e7f3fe;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .calendar-item strong,
+        .submission-item strong {
+            color: #1a73e8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Detailed User Profile</h1>
+        <div class="stat">
+            <p><strong>Total Solved Problems:</strong> {{ totalSolved }}</p>
+            <p><strong>Total Questions:</strong> {{ totalQuestions }}</p>
+        </div>
+        <div class="stat">
+            <p><strong>Easy Solved:</strong> {{ easySolved }} / {{ totalEasy }}</p>
+            <p><strong>Medium Solved:</strong> {{ mediumSolved }} / {{ totalMedium }}</p>
+            <p><strong>Hard Solved:</strong> {{ hardSolved }} / {{ totalHard }}</p>
+        </div>
+        <div class="stat">
+            <p><strong>Ranking:</strong> {{ ranking }}</p>
+            <p><strong>Contribution Points:</strong> {{ contributionPoint }}</p>
+            <p><strong>Reputation:</strong> {{ reputation }}</p>
+        </div>
+        <h2>Submission Calendar</h2>
+        <ul>
+            {% for date, count in submissionCalendar.items() %}
+            <li class="calendar-item"><strong>{{ date }}:</strong> {{ count }}</li>
+            {% endfor %}
+        </ul>
+        <h2>Recent Submissions</h2>
+        <ul>
+            {% for submission in recentSubmissions %}
+            <li class="submission-item">
+                <h3>{{ submission.title }}</h3>
+                <p><strong>Status:</strong> {{ submission.statusDisplay }}</p>
+                <p><strong>Language:</strong> {{ submission.lang }}</p>
+                <p><strong>Timestamp:</strong> {{ submission.timestamp }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        <h2>Matched User Stats</h2>
+        <h3>Accepted Submissions</h3>
+        <ul>
+            {% for submission in matchedUserStats.acSubmissionNum %}
+            <li class="submission-item">
+                <p><strong>Difficulty:</strong> {{ submission.difficulty }}</p>
+                <p><strong>Count:</strong> {{ submission.count }}</p>
+                <p><strong>Submissions:</strong> {{ submission.submissions }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        <h3>Total Submissions</h3>
+        <ul>
+            {% for submission in matchedUserStats.totalSubmissionNum %}
+            <li class="submission-item">
+                <p><strong>Difficulty:</strong> {{ submission.difficulty }}</p>
+                <p><strong>Count:</strong> {{ submission.count }}</p>
+                <p><strong>Submissions:</strong> {{ submission.submissions }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>

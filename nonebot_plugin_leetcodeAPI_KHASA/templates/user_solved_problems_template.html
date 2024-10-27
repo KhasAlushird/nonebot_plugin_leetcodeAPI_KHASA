@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Solved Problems</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: #e7f3fe;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #e7f3fe;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stat strong {
+            color: #1a73e8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Solved Problems</h1>
+        <div class="stat">
+            <p><strong>Total Solved Problems:</strong> {{ solvedProblem }}</p>
+        </div>
+        <div class="stat">
+            <p><strong>Easy Solved:</strong> {{ easySolved }}</p>
+            <p><strong>Medium Solved:</strong> {{ mediumSolved }}</p>
+            <p><strong>Hard Solved:</strong> {{ hardSolved }}</p>
+        </div>
+        <h2>Total Submissions</h2>
+        <ul>
+            {% for submission in totalSubmissionNum %}
+            <li>
+                <p><strong>Difficulty:</strong> {{ submission.difficulty }}</p>
+                <p><strong>Count:</strong> {{ submission.count }}</p>
+                <p><strong>Submissions:</strong> {{ submission.submissions }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        <h2>Accepted Submissions</h2>
+        <ul>
+            {% for submission in acSubmissionNum %}
+            <li>
+                <p><strong>Difficulty:</strong> {{ submission.difficulty }}</p>
+                <p><strong>Count:</strong> {{ submission.count }}</p>
+                <p><strong>Submissions:</strong> {{ submission.submissions }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>

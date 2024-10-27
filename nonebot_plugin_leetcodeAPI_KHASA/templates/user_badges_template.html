@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Badges</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: #e7f3fe;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+        }
+
+        .badge img {
+            margin-right: 10px;
+        }
+
+        .badge-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .badge-info strong {
+            color: #1a73e8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Badges</h1>
+        <h2>Active Badge</h2>
+        <div class="badge">
+            <img src="{{ activeBadge.icon }}" alt="Active Badge Icon" width="50" height="50">
+            <div class="badge-info">
+                <p><strong>{{ activeBadge.displayName }}</strong></p>
+                <p><strong>Creation Date:</strong> {{ activeBadge.creationDate }}</p>
+            </div>
+        </div>
+        <h2>Badges</h2>
+        <ul>
+            {% for badge in badges %}
+            <li class="badge">
+                <img src="{{ badge.icon }}" alt="Badge Icon" width="50" height="50">
+                <div class="badge-info">
+                    <p><strong>{{ badge.displayName }}</strong></p>
+                    <p><strong>Creation Date:</strong> {{ badge.creationDate }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <h2>Upcoming Badges</h2>
+        <ul>
+            {% for badge in upcomingBadges %}
+            <li class="badge">
+                <img src="{{ badge.icon }}" alt="Upcoming Badge Icon" width="50" height="50">
+                <div class="badge-info">
+                    <p><strong>{{ badge.name }}</strong></p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>

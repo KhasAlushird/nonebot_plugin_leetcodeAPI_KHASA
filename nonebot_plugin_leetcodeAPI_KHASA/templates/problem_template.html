@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{questionTitle}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+        p {
+            color: #666;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .difficulty {
+            font-weight: bold;
+            color: #d9534f;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #e7f3fe;
+            color: #1a73e8;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{questionTitle}}</h1>
+        <p><strong>Difficulty:</strong> <span class="difficulty">{{difficulty}}</span></p>
+        <p><strong>Description:</strong> {{ description | safe }}</p>
+        <p><strong>Examples:</strong></p>
+        <ul>
+            {% for example in exampleTestcases.split('\n') %}
+            <li>{{ example }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Hints:</strong></p>
+        <ul>
+            {% for hint in hints %}
+            <li>{{ hint }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Tags:</strong></p>
+        <ul>
+            {% for tag in topicTags %}
+            <li class="tag">{{ tag.name }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Link:</strong> <a href="{{ questionLink }}">{{ questionLink }}</a></p>
+    </div>
+</body>
+
+</html>
