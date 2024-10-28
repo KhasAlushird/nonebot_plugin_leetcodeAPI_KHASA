@@ -1,6 +1,6 @@
 # Nonebot Plugin for LeetCode API
 
-本插件功能为获取 LeetCode（非中文站）中有关试题、用户和讨论相关的信息，并通过 QQ 发送出去。使用了 [alfa-leetcode-api](https://github.com/alfaarghya/alfa-leetcode-api) 进行开发，实现了原 API 的绝大部分功能。
+本插件功能为:获取 LeetCode（非中文站）中有关试题、用户和讨论相关的信息，并通过 QQ 进行发送。使用了 [alfa-leetcode-api](https://github.com/alfaarghya/alfa-leetcode-api) 进行开发，实现了原 API 的绝大部分功能。
 
 ## 基本功能
 
