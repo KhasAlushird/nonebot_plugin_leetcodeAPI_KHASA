@@ -4,15 +4,17 @@ import httpx
 from nonebot.log import logger
 import json
 from jinja2 import Environment, FileSystemLoader
+from .config import conf
+import jinja2
+from pathlib import Path
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(current_dir, "config.json")
-with open(config_path,'r') as file:
-    config = json.load(file)
+templates_path = Path(__file__).resolve().parent / "templates"
 
-env = Environment(loader=FileSystemLoader(current_dir))
-API_BASE_URL = config["API_BASE_URL"]
+env = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(templates_path),
+)
+API_BASE_URL = conf.API_BASE_URL
 
 
 

@@ -3,17 +3,19 @@ import httpx
 from nonebot.log import logger
 import json
 from jinja2 import Environment, FileSystemLoader
+from .config import conf
+import jinja2
+from pathlib import Path
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(current_dir, "config.json")
-with open(config_path,'r') as file:
-    config = json.load(file)
+templates_path = Path(__file__).resolve().parent / "templates"
 
-env = Environment(loader=FileSystemLoader(current_dir))
-API_BASE_URL = config["API_BASE_URL"]
-DEFAULT_DISCUSSION_NUM = config["DEFAULT_DISCUSSION_NUM"]
-MAX_DISCUSSION_NUM = config["MAX_DISCUSSION_NUM"]
+env = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(templates_path),
+)
+API_BASE_URL = conf.API_BASE_URL
+DEFAULT_DISCUSSION_NUM = conf.DEFAULT_DISCUSSION_NUM
+MAX_DISCUSSION_NUM = conf.MAX_DISCUSSION_NUM
 
 def render_discussion_html(discussion_data):
     '''渲染讨论数据为HTML'''

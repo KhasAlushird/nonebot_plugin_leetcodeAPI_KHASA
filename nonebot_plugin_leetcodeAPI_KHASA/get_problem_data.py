@@ -4,17 +4,20 @@ import httpx
 from nonebot.log import logger
 import json
 from jinja2 import Environment, FileSystemLoader
+from .config import conf
+import jinja2
+from pathlib import Path
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(current_dir, "config.json")
-with open(config_path,'r') as file:
-    config = json.load(file)
-
-env = Environment(loader=FileSystemLoader(current_dir))
-API_BASE_URL = config["API_BASE_URL"]
-DEFAULT_PROBLEM_NUM = config["DEFAULT_PROBLEM_NUM"]
-MAX_PROBLEM_NUM = config["MAX_PROBLEM_NUM"]
+templates_path = Path(__file__).resolve().parent / "templates"
+if not templates_path.exists():
+    raise FileNotFoundError(f"模板文件夹 {templates_path} 不存在，请确保模板文件夹存在。")
+env = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(templates_path),
+)
+API_BASE_URL = conf.API_BASE_URL
+DEFAULT_PROBLEM_NUM = conf.DEFAULT_PROBLEM_NUM
+MAX_PROBLEM_NUM = conf.MAX_PROBLEM_NUM
 
 
 

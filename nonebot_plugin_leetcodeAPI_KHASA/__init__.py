@@ -3,22 +3,48 @@ from nonebot import CommandGroup, on_command
 from nonebot.adapters.onebot.v11 import Bot, Event, MessageEvent
 from nonebot.rule import to_me
 from nonebot.typing import T_State
+
+from nonebot.plugin import PluginMetadata, require
+
+require("nonebot_plugin_htmlrender")
+require("nonebot_plugin_localstore")
+__plugin_meta__ = PluginMetadata(
+    name="nonebot-plugin-leetcodeapi-khasa",
+    description="A Nonebot plugin for interacting with LeetCode (Using API made by alfaarghya)",
+    usage=(
+        "/lc_dpb: 获取每日一题\n"
+        "/lc_spb: 获取指定题目\n"
+        "/lc_mpb: 随机获取指定数量的题目列表\n"
+        "/lc_tpb: 随机获取指定数量指定标签的题目\n"
+        "/lc_1dc: 获取最热门的若干个讨论\n"
+        "/lc_2dc: 根据 ID 获取讨论\n"
+        "/lc_3dc: 根据 ID 获取讨论的评论\n"
+        "/lc_pf: 获取指定用户的简介\n"
+        "/lc_depf: 获取指定用户的详细数据\n"
+        "/lc_bdu: 获取指定用户的徽章\n"
+        "/lc_svu: 获取指定用户的解决问题列表\n"
+        "/lc_cthis: 获取指定用户的竞赛历史\n"
+        "/lc_sub: 获取指定用户的提交历史\n"
+        "/lc_acsub: 获取指定用户的 AC 提交历史\n"
+        "/lc_h: 获取指令信息"
+    ),
+    type="application",
+    homepage="https://github.com/KhasAlushird/nonebot_plugin_leetcodeAPI_KHASA",
+    supported_adapters={"~onebot.v11"},
+)
+
 from .get_problem_data import *
 from .get_discussion_data import *
 from .get_user_data import *
 import os
 import base64
+from .config import conf
 
 
 from nonebot_plugin_htmlrender import html_to_pic
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(current_dir, "config.json")
-with open(config_path,'r') as file:
-    config = json.load(file)
-
-ONLY_SHOW_FREQUENTLY_USED_COMMANDS = config["ONLY_SHOW_FREQUENTLY_USED_COMMANDS"]
+ONLY_SHOW_FREQUENTLY_USED_COMMANDS = conf.ONLY_SHOW_FREQUENTLY_USED_COMMANDS
 
 
 #<-----------------------------------------help------------------------------------------------------------> 
