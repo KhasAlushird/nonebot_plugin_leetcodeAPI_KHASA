@@ -3,14 +3,14 @@ from nonebot_plugin_localstore import get_data_dir
 from pydantic import BaseModel
 
 class Config(BaseModel):
-    ONLY_SHOW_FREQUENTLY_USED_COMMANDS: bool = False
-    API_BASE_URL: str = "https://alfa-leetcode-api.onrender.com"
-    DEFAULT_DISCUSSION_NUM: int = 3
-    MAX_DISCUSSION_NUM: int = 10
-    DEFAULT_PROBLEM_NUM: int = 2
-    MAX_PROBLEM_NUM: int = 5
-    SUBMISSION_LIMIT: int = 5
-    CALENDAR_LIMIT: int = 7
+    only_show_frequently_used_commands: bool = False
+    api_base_url: str = "https://alfa-leetcode-api.onrender.com"
+    default_discussion_num: int = 3
+    max_discussion_num: int = 10
+    default_problem_num: int = 2
+    max_problem_num: int = 5
+    submission_limit: int = 5
+    calendar_limit: int = 7
 
 # 从 Nonebot 的配置中获取插件的配置项
 conf = get_plugin_config(Config)

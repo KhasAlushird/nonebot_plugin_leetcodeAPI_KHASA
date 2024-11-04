@@ -5,9 +5,13 @@ from nonebot.rule import to_me
 from nonebot.typing import T_State
 
 from nonebot.plugin import PluginMetadata, require
-
 require("nonebot_plugin_htmlrender")
 require("nonebot_plugin_localstore")
+from .config import Config
+
+
+
+
 __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-leetcodeapi-khasa",
     description="A Nonebot plugin for interacting with LeetCode (Using API made by alfaarghya)",
@@ -31,6 +35,7 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     homepage="https://github.com/KhasAlushird/nonebot_plugin_leetcodeAPI_KHASA",
     supported_adapters={"~onebot.v11"},
+    config=Config,
 )
 
 from .get_problem_data import *
@@ -44,7 +49,7 @@ from .config import conf
 from nonebot_plugin_htmlrender import html_to_pic
 
 
-ONLY_SHOW_FREQUENTLY_USED_COMMANDS = conf.ONLY_SHOW_FREQUENTLY_USED_COMMANDS
+ONLY_SHOW_FREQUENTLY_USED_COMMANDS = conf.only_show_frequently_used_commands
 
 
 #<-----------------------------------------help------------------------------------------------------------> 
@@ -117,7 +122,7 @@ req_problems_with_tags = on_command("lc_tpb", priority=10, block=True)
 @req_daily_problem_data.handle()
 async def send_daily_problem(bot: Bot, event: Event):
     try:
-        daily_problem_data = get_daily_problem()
+        daily_problem_data = await get_daily_problem()
         render_result = render_problem_html(daily_problem_data,"daily")
         daily_problem_html = render_result[0]
         pic = await html_to_pic(daily_problem_html, viewport={"width": 840, "height": 400})
@@ -141,7 +146,7 @@ async def send_selected_problem(bot: Bot, event: Event, state: T_State):
     #特别注意：这里的title_slug是nonebot的某种message类型，需要转换成str类型
     title_slug_str = str(title_slug)
     try:
-        selected_problem_data = get_selected_problem(title_slug_str)
+        selected_problem_data = await get_selected_problem(title_slug_str)
         render_result = render_problem_html(selected_problem_data,"selected")
         selected_problem_html = render_result[0]
         pic = await html_to_pic(selected_problem_html, viewport={"width": 840, "height": 400})
@@ -170,7 +175,7 @@ async def send_problems(bot: Bot, event: Event, state: T_State):
     except ValueError:
         await req_problems.send("请输入有效的数字喵~")
     try:
-        problems_data = get_problems(int_limit)
+        problems_data = await get_problems(int_limit)
         render_result = render_problems_html(problems_data)
         problems_html = render_result[0]
         links = render_result[1]
@@ -214,7 +219,7 @@ async def send_problems_with_tags(bot: Bot, event: Event, state: T_State):
         await req_problems_with_tags.send("请输入有效的标签和数量，格式为 TAG1-TAG2-TAG3-NUMBER 喵~")
         return
     try:
-        problems_data = get_problems_with_tags(tags, limit)
+        problems_data = await get_problems_with_tags(tags, limit)
         render_result = render_problems_html(problems_data)
         problems_html = render_result[0]
         links = render_result[1]
@@ -255,9 +260,9 @@ async def send_selected_problem(bot: Bot, event: Event, state: T_State):
         await req_top_discussion_data.send("请输入有效的数字喵~")
     try:
         if int_dc_num<=0:
-            trending_discussions_data = get_trending_discussion()
+            trending_discussions_data =await  get_trending_discussion()
         else:
-            trending_discussions_data = get_trending_discussion(int_dc_num)
+            trending_discussions_data = await get_trending_discussion(int_dc_num)
         trending_discussions_html = render_discussion_html(trending_discussions_data)
         pic = await html_to_pic(trending_discussions_html, viewport={"width": 840, "height": 400})
         await req_top_discussion_data.send(MessageSegment.image(pic))
@@ -280,7 +285,7 @@ async def send_discussion_by_id(bot: Bot, event: Event, state: T_State):
     #特别注意：这里的discussion_id是nonebot的某种message类型，需要转换类型
     str_discussion_id = str(discussion_id)
     try:
-        discussion_data = get_discussion_by_id(str_discussion_id)
+        discussion_data = await get_discussion_by_id(str_discussion_id)
         discussion_html = render_discussion_by_id_html(discussion_data)
         pic = await html_to_pic(discussion_html, viewport={"width": 840, "height": 400})
         await req_discussion_by_id.send(MessageSegment.image(pic))
@@ -303,7 +308,7 @@ async def send_discussion_comments_by_id(bot: Bot, event: Event, state: T_State)
     #特别注意：这里的discussion_id是nonebot的某种message类型，需要转换类型
     str_discussion_id = str(discussion_id)
     try:
-        comments_data = get_discussion_comments(str_discussion_id)
+        comments_data = await get_discussion_comments(str_discussion_id)
         comments_html = render_discussion_comments_html(comments_data)
         pic = await html_to_pic(comments_html, viewport={"width": 840, "height": 400})
         await req_discussion_comments_by_id.send(MessageSegment.image(pic))
@@ -334,7 +339,7 @@ async def send_user_profile(bot: Bot, event: Event, state: T_State):
     #特别注意：这里的username是nonebot的某种message类型，需要转换类型
     str_username = str(username)
     try:
-        profile_data = get_user_profile(str_username)
+        profile_data = await get_user_profile(str_username)
         profile_html = render_user_profile_html(profile_data)
         pic = await html_to_pic(profile_html, viewport={"width": 840, "height": 400})
         await req_user_profile.send(MessageSegment.image(pic))
@@ -359,7 +364,7 @@ async def send_user_badges(bot: Bot, event: Event, state: T_State):
     #特别注意：这里的username是nonebot的某种message类型，需要转换类型
     str_username = str(username)
     try:
-        badges_data = get_user_badges(str_username)
+        badges_data = await get_user_badges(str_username)
         badges_html = render_user_badges_html(badges_data)
         pic = await html_to_pic(badges_html, viewport={"width": 840, "height": 400})
         await req_user_badges.send(MessageSegment.image(pic))
@@ -381,7 +386,7 @@ async def send_user_solved_problems(bot: Bot, event: Event, state: T_State):
     #特别注意：这里的username是nonebot的某种message类型，需要转换类型
     str_username = str(username)
     try:
-        solved_data = get_user_solved_problems(str_username)
+        solved_data = await get_user_solved_problems(str_username)
         solved_html = render_user_solved_problems_html(solved_data)
         pic = await html_to_pic(solved_html, viewport={"width": 840, "height": 400})
         await req_user_solved_problems.send(MessageSegment.image(pic))
@@ -406,7 +411,7 @@ async def send_user_contest_history(bot: Bot, event: Event, state: T_State):
     #特别注意：这里的username是nonebot的某种message类型，需要转换类型
     str_username = str(username)
     try:
-        contest_history_data = get_user_contest_history(str_username)
+        contest_history_data = await get_user_contest_history(str_username)
         contest_history_html = render_user_contest_history_html(contest_history_data)
         pic = await html_to_pic(contest_history_html, viewport={"width": 840, "height": 400})
         await req_user_contest_history.send(MessageSegment.image(pic))
@@ -428,7 +433,7 @@ async def send_user_submissions(bot: Bot, event: Event, state: T_State):
     str_username = str(username)
     try:
         limit = config["SUBMISSION_LIMIT"]  # 从config.json中读取limit
-        submissions_data = get_user_submissions(str_username, limit)
+        submissions_data = await get_user_submissions(str_username, limit)
         submissions_html = render_user_submissions_html(submissions_data)
         pic = await html_to_pic(submissions_html, viewport={"width": 840, "height": 400})
         await req_user_submissions.send(MessageSegment.image(pic))
@@ -452,7 +457,7 @@ async def send_user_ACsubmissions(bot: Bot, event: Event, state: T_State):
     str_username = str(username)
     try:
         limit = config["SUBMISSION_LIMIT"]  # 从config.json中读取limit
-        submissions_data = get_user_ACsubmissions(str_username, limit)
+        submissions_data = await get_user_ACsubmissions(str_username, limit)
         submissions_html = render_user_submissions_html(submissions_data)
         pic = await html_to_pic(submissions_html, viewport={"width": 840, "height": 400})
         await req_user_submissions.send(MessageSegment.image(pic))
@@ -474,7 +479,7 @@ async def send_detailed_user_profile(bot: Bot, event: Event, state: T_State):
     #特别注意：这里的username是nonebot的某种message类型，需要转换类型
     str_username = str(username)
     try:
-        profile_data = get_detailed_user_profile(str_username)
+        profile_data = await get_detailed_user_profile(str_username)
         profile_html = render_detailed_user_profile_html(profile_data)
         pic = await html_to_pic(profile_html, viewport={"width": 840, "height": 400})
         await req_detailed_user_profile.send(MessageSegment.image(pic))

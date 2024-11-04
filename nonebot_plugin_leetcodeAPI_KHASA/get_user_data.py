@@ -8,19 +8,17 @@ from .config import conf
 import jinja2
 from pathlib import Path
 
-
 templates_path = Path(__file__).resolve().parent / "templates"
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(templates_path),
 )
-API_BASE_URL = conf.API_BASE_URL
-
+API_BASE_URL = conf.api_base_url
 
 
 def render_user_profile_html(profile_data):
     '''渲染用户个人资料数据为HTML'''
-    template = env.get_template("templates/user_profile_template.html")
+    template = env.get_template("user_profile_template.html")
     html_content = template.render(
         username=profile_data.get('username', 'N/A'),
         name=profile_data.get('name', 'N/A'),
@@ -42,7 +40,7 @@ def render_user_profile_html(profile_data):
 
 def render_user_badges_html(badges_data):
     '''渲染用户徽章数据为HTML'''
-    template = env.get_template("templates/user_badges_template.html")
+    template = env.get_template("user_badges_template.html")
     html_content = template.render(
         badges=badges_data.get('badges', []),
         upcomingBadges=badges_data.get('upcomingBadges', []),
@@ -53,7 +51,7 @@ def render_user_badges_html(badges_data):
 
 def render_user_solved_problems_html(solved_data):
     '''渲染用户解决的问题列表数据为HTML'''
-    template = env.get_template("templates/user_solved_problems_template.html")
+    template = env.get_template("user_solved_problems_template.html")
     html_content = template.render(
         solvedProblem=solved_data.get('solvedProblem', 0),
         easySolved=solved_data.get('easySolved', 0),
@@ -65,20 +63,18 @@ def render_user_solved_problems_html(solved_data):
     return html_content
 
 
-
 def render_user_contest_history_html(contest_history_data):
     '''渲染用户竞赛历史数据为HTML'''
-    template = env.get_template("templates/user_contest_history_template.html")
+    template = env.get_template("user_contest_history_template.html")
     html_content = template.render(
         contestHistory=contest_history_data.get('contestHistory', [])[:5]  # 只获取前5个竞赛历史
     )
     return html_content
 
 
-
 def render_user_submissions_html(submissions_data):
     '''渲染用户提交记录数据为HTML'''
-    template = env.get_template("templates/user_submissions_template.html")
+    template = env.get_template("user_submissions_template.html")
     html_content = template.render(
         submissions=submissions_data.get('submission', [])
     )
@@ -86,7 +82,7 @@ def render_user_submissions_html(submissions_data):
 
 def render_detailed_user_profile_html(profile_data):
     '''渲染用户详细个人资料数据为HTML'''
-    template = env.get_template("templates/detailed_user_profile_template.html")
+    template = env.get_template("detailed_user_profile_template.html")
     html_content = template.render(
         totalSolved=profile_data.get('totalSolved', 0),
         totalSubmissions=profile_data.get('totalSubmissions', []),
@@ -107,96 +103,97 @@ def render_detailed_user_profile_html(profile_data):
     return html_content
 
 
-def get_user_profile(username):
+async def get_user_profile(username):
     '''根据用户名获取用户个人资料'''
     try:
-        res = httpx.get(f"{API_BASE_URL}/{username}")
-        res.raise_for_status()
-        profile_data = res.json()
-        logger.info("用户个人资料获取成功")
-        return profile_data
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"{API_BASE_URL}/{username}")
+            res.raise_for_status()
+            profile_data = res.json()
+            logger.info("用户个人资料获取成功")
+            return profile_data
     except Exception as e:
         logger.error("用户个人资料获取失败喵~", e)
         raise e
-    
-def get_user_badges(username):
+
+async def get_user_badges(username):
     '''根据用户名获取用户徽章'''
     try:
-        res = httpx.get(f"{API_BASE_URL}/{username}/badges")
-        res.raise_for_status()
-        badges_data = res.json()
-        logger.info("用户徽章获取成功")
-        return badges_data
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"{API_BASE_URL}/{username}/badges")
+            res.raise_for_status()
+            badges_data = res.json()
+            logger.info("用户徽章获取成功")
+            return badges_data
     except Exception as e:
         logger.error("用户徽章获取失败喵~", e)
         raise e
-    
 
-def get_user_solved_problems(username):
+
+async def get_user_solved_problems(username):
     '''根据用户名获取用户解决的问题列表'''
     try:
-        res = httpx.get(f"{API_BASE_URL}/{username}/solved")
-        res.raise_for_status()
-        solved_data = res.json()
-        logger.info("用户解决的问题列表获取成功")
-        return solved_data
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"{API_BASE_URL}/{username}/solved")
+            res.raise_for_status()
+            solved_data = res.json()
+            logger.info("用户解决的问题列表获取成功")
+            return solved_data
     except Exception as e:
         logger.error("用户解决的问题列表获取失败喵~", e)
         raise e
-    
 
 
-def get_user_contest_history(username):
+async def get_user_contest_history(username):
     '''根据用户名获取用户竞赛历史'''
     try:
-        res = httpx.get(f"{API_BASE_URL}/{username}/contest/history")
-        res.raise_for_status()
-        contest_history_data = res.json()
-        logger.info("用户竞赛历史获取成功")
-        return contest_history_data
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"{API_BASE_URL}/{username}/contest/history")
+            res.raise_for_status()
+            contest_history_data = res.json()
+            logger.info("用户竞赛历史获取成功")
+            return contest_history_data
     except Exception as e:
         logger.error("用户竞赛历史获取失败喵~", e)
         raise e
-    
 
 
-
-
-def get_user_submissions(username, limit):
+async def get_user_submissions(username, limit):
     '''根据用户名获取用户提交记录'''
     try:
-        res = httpx.get(f"{API_BASE_URL}/{username}/submission?limit={limit}")
-        res.raise_for_status()
-        submissions_data = res.json()
-        logger.info("用户提交记录获取成功")
-        return submissions_data
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"{API_BASE_URL}/{username}/submission?limit={limit}")
+            res.raise_for_status()
+            submissions_data = res.json()
+            logger.info("用户提交记录获取成功")
+            return submissions_data
     except Exception as e:
         logger.error("用户提交记录获取失败喵~", e)
         raise e
-    
-def get_user_ACsubmissions(username, limit):
+
+async def get_user_ACsubmissions(username, limit):
     '''根据用户名获取用户AC提交记录'''
     try:
-        res = httpx.get(f"{API_BASE_URL}/{username}/acSubmission?limit={limit}")
-        res.raise_for_status()
-        submissions_data = res.json()
-        logger.info("用户AC提交记录获取成功")
-        return submissions_data
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"{API_BASE_URL}/{username}/acSubmission?limit={limit}")
+            res.raise_for_status()
+            submissions_data = res.json()
+            logger.info("用户AC提交记录获取成功")
+            return submissions_data
     except Exception as e:
         logger.error("用户AC提交记录获取失败喵~", e)
         raise e
-    
 
 
-
-def get_detailed_user_profile(username):
+async def get_detailed_user_profile(username):
     '''根据用户名获取用户详细个人资料数据'''
     try:
-        res = httpx.get(f"{API_BASE_URL}/userProfile/{username}")
-        res.raise_for_status()
-        profile_data = res.json()
-        logger.info("用户详细个人资料获取成功")
-        return profile_data
+        async with httpx.AsyncClient() as client:
+            res = await client.get(f"{API_BASE_URL}/userProfile/{username}")
+            res.raise_for_status()
+            profile_data = res.json()
+            logger.info("用户详细个人资料获取成功")
+            return profile_data
     except Exception as e:
         logger.error("用户详细个人资料获取失败喵~", e)
         raise e
